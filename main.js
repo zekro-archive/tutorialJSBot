@@ -7,7 +7,7 @@ const config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
 var client = new Discord.Client()
 
 
-const AUTOROLEID = "289905364055621634"
+const AUTOROLEID = "332164463186673666"
 
 
 client.on('ready', () => {
@@ -37,7 +37,7 @@ client.on('message', (msg) => {
         chan   = msg.channel,
         guild  = msg.guild
 
-    if (author.id != client.user.id && cont.startsWith(config.prefix)) {
+    if (msg.channel.type == "text" && author.id != client.user.id && cont.startsWith(config.prefix)) {
 
         // ::say hello world!
         var invoke = cont.split(' ')[0].substr(config.prefix.length),
@@ -53,13 +53,14 @@ client.on('message', (msg) => {
 
 client.on('guildMemberAdd', (memb) => {
     var guild = memb.guild
-
     var role = guild.roles.find(r => r.id == AUTOROLEID)
     if (role) {
         memb.addRole(role)
-        memb.send("", Discord.RichEmbed().setDescription(`Hey! YOu got automatically assigned the role <@&${AUTOROLEID}>!`))
+        memb.sendMessage('', new Discord.RichEmbed()
+            .setColor(0x29B6F6)
+            .setDescription(`You got automatically assigned the role <@&${AUTOROLEID}>.`)
+        )
     }
-
 })
 
 
