@@ -88,4 +88,23 @@ client.on('guildMemberUpdate', (mold, mnew) => {
 })
 
 
+const pres = {
+    "289901406985388033": "[MOD]"
+}
+
+client.on('guildMemberUpdate', (mold, mnew) => {
+    var guild = mnew.guild
+    if (mold.roles.array().length < mnew.roles.array().length) {
+        var role = mnew.roles.find(r => mold.roles.find(r2 => r2.id == r.id) == null)
+        if (role.id in pres)
+            mnew.setNickname(`${pres[role.id]} ${mnew.displayName}`)
+    }
+    else if (mold.roles.array().length > mnew.roles.array().length) {
+        var role = mold.roles.find(r => mnew.roles.find(r2 => r2.id == r.id) == null)
+        if (role.id in pres)
+            mnew.setNickname(mnew.displayName.substr(pres[role.id].length + 1))
+    }
+})
+
+
 client.login(config.token)
