@@ -7,8 +7,6 @@ const config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
 var client = new Discord.Client()
 
 
-const AUTOROLEID = "332164463186673666"
-
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.username}...`)
@@ -50,16 +48,42 @@ client.on('message', (msg) => {
 
 })
 
+// https://discord.gg/uPsQQn
+
+const AUTOROLEID = "332164463186673666"
 
 client.on('guildMemberAdd', (memb) => {
-    var guild = memb.guild
-    var role = guild.roles.find(r => r.id == AUTOROLEID)
+
+    var role = memb.guild.roles.find(r => r.id == AUTOROLEID)
+
     if (role) {
-        memb.addRole(role)
-        memb.sendMessage('', new Discord.RichEmbed()
-            .setColor(0x29B6F6)
-            .setDescription(`You got automatically assigned the role <@&${AUTOROLEID}>.`)
-        )
+        memb.addRole(role).then(() => {
+            memb.send('', new Discord.RichEmbed().setColor(0x29B6F6).setDescription(`You got automatically assigned the role ${role.name}!`))
+        })
+    }
+
+})
+
+
+const PRES = {
+    "289901406985388033": "[MOD]",
+    "289901361951277056": "[ADMIN]"
+}
+
+
+client.on('guildMemberUpdate', (mold, mnew) => {
+    var guild = mnew.guild
+    if (mold.roles.array().length < mnew.roles.array().length) {
+        var role = mnew.roles.find(r => mold.roles.find(rold => rold.id == r.id) == null)
+        if (role.id in PRES) {
+            mnew.setNickname(`${PRES[role.id]} ${mnew.displayName}`)
+        }
+    }
+    else if (mold.roles.array().length > mnew.roles.array().length) {
+        var role = mold.roles.find(r => mnew.roles.find(rold => rold.id == r.id) == null)
+        if (role.id in PRES) {
+            mnew.setNickname(mnew.displayName.substr(PRES[role.id].length + 1))
+        }
     }
 })
 
