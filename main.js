@@ -1,12 +1,13 @@
 const Discord = require('discord.js')
-const fs      = require('fs')
+const fs = require('fs')
 const Embeds = require('./embed')
+const vote = require('./vote')
 
 const config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
 
 var client = new Discord.Client()
 
-
+vote.set_bot(client)
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.username}...`)
@@ -15,12 +16,14 @@ client.on('ready', () => {
 
 var cmdmap = {
     say: cmd_say,
-    test: cmd_test
+    test: cmd_test,
+    vote: vote.ex
 }
 
 function cmd_say(msg, args) {
     msg.channel.send(args.join(' '))
 }
+
 
 function cmd_test(msg, args) {
     //Embeds.error(msg.channel, 'This is actuially not an error', 'Not an error')
