@@ -1,5 +1,5 @@
  <div align="center">
-     <h1>~ JAVA Grundlagen Tutorial ~</h1>
+     <h1>~ JAVASCRIPT Grundlagen Tutorial ~</h1>
      <strong>Dies ist die offizielle Repository zu der NodeJS DiscordBot Tutorialreihe</strong><br><br>
 
  </div>
